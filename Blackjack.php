@@ -2,11 +2,19 @@
 
 class Blackjack {
     // properties
-    private $player;
+    private Player $player;
 
-    private $dealer;
+    private Player $dealer;
 
-    private $deck;
+    private Deck $deck;
+
+    // constructor
+    public function __construct() {
+        $this->deck = new Deck();
+        $this->deck->shuffle();
+        $this->player = new Player($this->deck);
+        $this->dealer = new Player($this->deck);
+    }
 
     // methods
     public function getPlayer() {

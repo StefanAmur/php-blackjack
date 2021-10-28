@@ -7,16 +7,24 @@ class Player {
     private $cards = array();
     private $lost = false;
 
+    const TARGET = 21;
+
     public function __construct(Deck $deck) {
         Array_push($this->cards, $deck->drawCard());
         Array_push($this->cards, $deck->drawCard());
     }
 
     // methods
-    public function hit(): void {
+    public function hit(Deck $deck) {
+        Array_push($this->cards, $deck->drawCard());
+        $newScore = $this->getScore();
+        if ($newScore > $this->TARGET) {
+            $this->lost = true;
+        }
     }
 
     public function surrender(): void {
+        $this->lost = true;
     }
 
     public function getScore(): int {
@@ -27,6 +35,7 @@ class Player {
         return $score;
     }
 
-    public function hasLost(): void {
+    public function hasLost(): bool {
+        return $this->lost;
     }
 }

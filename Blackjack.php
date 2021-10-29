@@ -6,7 +6,7 @@ class Blackjack {
     // properties
     private Player $player;
 
-    private Player $dealer;
+    private Dealer $dealer;
 
     private Deck $deck;
 

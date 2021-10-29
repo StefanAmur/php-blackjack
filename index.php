@@ -21,10 +21,12 @@ $dealer = $_SESSION['game']->getDealer();
 
 $result = "";
 $dealerScore = "";
+$cardStyles = "card card-hidden";
 
 if ($player->getScore() > Player::TARGET) {
     $player->surrender();
     $result = "You lost!";
+    $cardStyles = "card";
 }
 
 if (isset($_POST['hit'])) {
@@ -32,15 +34,18 @@ if (isset($_POST['hit'])) {
     if ($player->getScore() == Player::TARGET) {
         $dealer->surrender();
         $result = "You won!";
+        $cardStyles = "card";
     } else if ($player->getScore() > Player::TARGET) {
         $player->surrender();
         $dealerScore = $dealer->getScore();
+        $cardStyles = "card";
         $result = "You lost!";
     }
 }
 
 if (isset($_POST['stay'])) {
     $playerScore = $player->getScore();
+    $cardStyles = "card";
     if ($playerScore == Player::TARGET) {
         $dealer->surrender();
         $result = "You won!";
@@ -59,6 +64,7 @@ if (isset($_POST['stay'])) {
 if (isset($_POST['surrender'])) {
     $player->surrender();
     $dealerScore = $dealer->getScore();
+    $cardStyles = "card";
     $result = "You lost!";
 }
 
@@ -71,7 +77,6 @@ if (isset($_POST['new'])) {
     $result = "";
     $dealerScore = "";
 }
-
 
 ?>
 
@@ -92,7 +97,7 @@ if (isset($_POST['new'])) {
         <section class="dealer">
             <h2 class="title">Dealer's hand</h2>
             <h3 class="score">Dealer's score: <?php echo $dealerScore; ?></h3>
-            <p class="card card-dealer">
+            <p class="card <?php echo $cardStyles; ?>">
                 <?php
                 foreach ($dealer->getCards() as $card) {
                     echo $card->getUnicodeCharacter(true);
@@ -103,7 +108,7 @@ if (isset($_POST['new'])) {
         <section class="player">
             <h2 class="title">Your hand</h2>
             <h3 class="score">Your score: <?php echo $player->getScore(); ?></h3>
-            <p class="card">
+            <p class=<?php echo $cardStyles ?>>
                 <?php
                 foreach ($player->getCards() as $card) {
                     echo $card->getUnicodeCharacter(true);
@@ -121,7 +126,6 @@ if (isset($_POST['new'])) {
         <button class="btn btn-stay" type="submit" name="stay">Stay!</button>
         <button class="btn btn-surrender" type="submit" name="surrender">Surrender!</button>
         <button class="btn btn-new" type="submit" name="new">New game</button>
-
     </form>
 
 </body>

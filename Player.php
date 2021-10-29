@@ -16,10 +16,12 @@ class Player {
 
     // methods
     public function hit(Deck $deck) {
-        Array_push($this->cards, $deck->drawCard());
-        $newScore = $this->getScore();
-        if ($newScore > player::TARGET) {
-            $this->lost = true;
+        if ($this->lost == false) {
+            Array_push($this->cards, $deck->drawCard());
+            $newScore = $this->getScore();
+            if ($newScore > Player::TARGET) {
+                $this->lost = true;
+            }
         }
     }
 

@@ -7,6 +7,7 @@ require './Card.php';
 require './Deck.php';
 require './Player.php';
 require './Blackjack.php';
+require './Dealer.php';
 
 session_start();
 
@@ -17,24 +18,38 @@ if (!isset($_SESSION['game'])) {
 $deck = $_SESSION['game']->getDeck();
 $player = $_SESSION['game']->getPlayer();
 $dealer = $_SESSION['game']->getDealer();
+$result = "";
 
-// var_dump($player);
+
+if ($player->getScore() > Player::TARGET) {
+    $player->surrender();
+}
 
 if (isset($_POST['hit'])) {
-    echo "Hit button was... hit!";
     $player->hit($deck);
+    if ($player->getScore() == Player::TARGET) {
+        $dealer->surrender();
+    }
 }
 
 if (isset($_POST['stay'])) {
-    echo "The Stay button was clicked, bro!";
+    $dealer->hit($deck);
+    $dealerScore = $dealer->getScore();
+    if ($dealerScore > $player->getScore() && $dealerScore <= 21) {
+        $result = "The house always wins, unless it doesn't";
+    }
 }
 
 if (isset($_POST['surrender'])) {
-    echo "I give up, you win... but only because I can't be bothered atm!";
+    $player->surrender();
 }
 
 if (isset($_POST['new'])) {
     session_unset();
+    $_SESSION['game'] = new Blackjack();
+    $deck = $_SESSION['game']->getDeck();
+    $player = $_SESSION['game']->getPlayer();
+    $dealer = $_SESSION['game']->getDealer();
 }
 
 ?>
@@ -56,7 +71,7 @@ if (isset($_POST['new'])) {
         <section class="dealer">
             <h2 class="title">Dealer's hand</h2>
             <h3 class="score">Dealer's score: <?php echo $dealer->getScore(); ?></h3>
-            <p class="card">
+            <p class="card card-dealer">
                 <?php
                 foreach ($dealer->getCards() as $card) {
                     echo $card->getUnicodeCharacter(true);
@@ -78,10 +93,10 @@ if (isset($_POST['new'])) {
 
 
     <form action="index.php" method="POST" class="btn-form">
-        <button class="btn" type="submit" name="hit">Hit!</button>
-        <button class="btn" type="submit" name="stay">Stay!</button>
-        <button class="btn" type="submit" name="surrender">Surrender!</button>
-        <button class="btn" type="submit" name="new">New game</button>
+        <button class="btn btn-hit" type="submit" name="hit">Hit!</button>
+        <button class="btn btn-stay" type="submit" name="stay">Stay!</button>
+        <button class="btn btn-surrender" type="submit" name="surrender">Surrender!</button>
+        <button class="btn btn-new" type="submit" name="new">New game</button>
 
     </form>
 

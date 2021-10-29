@@ -18,30 +18,46 @@ if (!isset($_SESSION['game'])) {
 $deck = $_SESSION['game']->getDeck();
 $player = $_SESSION['game']->getPlayer();
 $dealer = $_SESSION['game']->getDealer();
-$result = "";
 
+$result = "";
 
 if ($player->getScore() > Player::TARGET) {
     $player->surrender();
+    $result = "You lost!";
 }
+
 
 if (isset($_POST['hit'])) {
     $player->hit($deck);
     if ($player->getScore() == Player::TARGET) {
         $dealer->surrender();
+        $result = "You won!";
+    } else if ($player->getScore() > Player::TARGET) {
+        $player->surrender();
+        $result = "You lost!";
     }
 }
 
 if (isset($_POST['stay'])) {
-    $dealer->hit($deck);
-    $dealerScore = $dealer->getScore();
-    if ($dealerScore > $player->getScore() && $dealerScore <= 21) {
-        $result = "The house always wins, unless it doesn't";
+    $playerScore = $player->getScore();
+    if ($playerScore == Player::TARGET) {
+        $dealer->surrender();
+        $result = "You won!";
+    } else {
+        $dealer->hit($deck);
+        $dealerScore = $dealer->getScore();
+        if ($dealerScore >= $playerScore && $dealerScore <= Player::TARGET) {
+            $player->surrender();
+            $result = "You lost!";
+        } else {
+            $result = "You won";
+        }
     }
 }
 
 if (isset($_POST['surrender'])) {
     $player->surrender();
+    $result = "You lost!";
 }
 
 if (isset($_POST['new'])) {
@@ -50,7 +66,9 @@ if (isset($_POST['new'])) {
     $deck = $_SESSION['game']->getDeck();
     $player = $_SESSION['game']->getPlayer();
     $dealer = $_SESSION['game']->getDealer();
+    $result = "";
 }
+
 
 ?>
 
@@ -91,6 +109,9 @@ if (isset($_POST['new'])) {
         </section>
     </section>
 
+    <section class="result-container">
+        <h2 class="title"><?php echo $result; ?></h2>
+    </section>
 
     <form action="index.php" method="POST" class="btn-form">
         <button class="btn btn-hit" type="submit" name="hit">Hit!</button>

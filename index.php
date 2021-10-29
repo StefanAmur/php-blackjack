@@ -20,12 +20,12 @@ $player = $_SESSION['game']->getPlayer();
 $dealer = $_SESSION['game']->getDealer();
 
 $result = "";
+$dealerScore = "";
 
 if ($player->getScore() > Player::TARGET) {
     $player->surrender();
     $result = "You lost!";
 }
-
 
 if (isset($_POST['hit'])) {
     $player->hit($deck);
@@ -34,6 +34,7 @@ if (isset($_POST['hit'])) {
         $result = "You won!";
     } else if ($player->getScore() > Player::TARGET) {
         $player->surrender();
+        $dealerScore = $dealer->getScore();
         $result = "You lost!";
     }
 }
@@ -57,6 +58,7 @@ if (isset($_POST['stay'])) {
 
 if (isset($_POST['surrender'])) {
     $player->surrender();
+    $dealerScore = $dealer->getScore();
     $result = "You lost!";
 }
 
@@ -67,6 +69,7 @@ if (isset($_POST['new'])) {
     $player = $_SESSION['game']->getPlayer();
     $dealer = $_SESSION['game']->getDealer();
     $result = "";
+    $dealerScore = "";
 }
 
 
@@ -88,7 +91,7 @@ if (isset($_POST['new'])) {
     <section class="deck">
         <section class="dealer">
             <h2 class="title">Dealer's hand</h2>
-            <h3 class="score">Dealer's score: <?php echo $dealer->getScore(); ?></h3>
+            <h3 class="score">Dealer's score: <?php echo $dealerScore; ?></h3>
             <p class="card card-dealer">
                 <?php
                 foreach ($dealer->getCards() as $card) {

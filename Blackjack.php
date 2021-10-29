@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class Blackjack {
     // properties
     private Player $player;

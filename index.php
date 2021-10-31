@@ -14,19 +14,44 @@ session_start();
 if (!isset($_SESSION['game'])) {
     $_SESSION['game'] = new Blackjack();
 }
-
 $deck = $_SESSION['game']->getDeck();
 $player = $_SESSION['game']->getPlayer();
 $dealer = $_SESSION['game']->getDealer();
 
 $result = "";
 $dealerScore = "";
+$playerScore = $player->getScore();
 $cardStyles = "card card-hidden";
 
-if ($player->getScore() > Player::TARGET) {
+if ($playerScore > Player::TARGET) {
     $player->surrender();
     $result = "You lost!";
     $cardStyles = "card";
+}
+
+if ($dealer->getScore() > Player::TARGET) {
+    $dealer->surrender();
+    $result = "You win!";
+    $cardStyles = "card";
+}
+switch (true) {
+    case ($playerScore == Player::TARGET  && $dealer->getScore() == Player::TARGET):
+        $result = "It's a draw!";
+        $cardStyles = "card";
+        $dealerScore = $dealer->getScore();
+        break;
+    case ($playerScore == Player::TARGET):
+        $dealer->surrender();
+        $result = "You win!";
+        $cardStyles = "card";
+        $dealerScore = $dealer->getScore();
+        break;
+    case ($dealer->getScore() == Player::TARGET):
+        $player->surrender();
+        $result = "You lost!";
+        $cardStyles = "card";
+        $dealerScore = $dealer->getScore();
+        break;
 }
 
 if (isset($_POST['hit'])) {
@@ -74,8 +99,30 @@ if (isset($_POST['new'])) {
     $deck = $_SESSION['game']->getDeck();
     $player = $_SESSION['game']->getPlayer();
     $dealer = $_SESSION['game']->getDealer();
+
     $result = "";
     $dealerScore = "";
+    $playerScore = $player->getScore();
+    $cardStyles = "card card-hidden";
+    switch (true) {
+        case ($playerScore == Player::TARGET  && $dealer->getScore() == Player::TARGET):
+            $result = "It's a draw!";
+            $cardStyles = "card";
+            $dealerScore = $dealer->getScore();
+            break;
+        case ($playerScore == Player::TARGET):
+            $dealer->surrender();
+            $result = "You win!";
+            $cardStyles = "card";
+            $dealerScore = $dealer->getScore();
+            break;
+        case ($dealer->getScore() == Player::TARGET):
+            $player->surrender();
+            $result = "You lost!";
+            $cardStyles = "card";
+            $dealerScore = $dealer->getScore();
+            break;
+    }
 }
 
 ?>
@@ -108,7 +155,7 @@ if (isset($_POST['new'])) {
         <section class="player">
             <h2 class="title">Your hand</h2>
             <h3 class="score">Your score: <?php echo $player->getScore(); ?></h3>
-            <p class=<?php echo $cardStyles ?>>
+            <p class="card">
                 <?php
                 foreach ($player->getCards() as $card) {
                     echo $card->getUnicodeCharacter(true);

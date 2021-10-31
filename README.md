@@ -13,12 +13,12 @@ If this is still an unclear subject for you don't feel bad to google some basic 
 ## Assignment duration and type
 
 We had 2️⃣ days to complete it (28/10 - 29/10) and it was a solo exercise  
-Note: Any number next to ✔ or ❌ means in which day I considered the feature/todo resolved or in which day I tackeled it
+Note: Any number icon (like 1️⃣) next to ✔ or ❌ means in which day I considered the feature/todo resolved or in which day I tackeled it.
 
 ## Instructions / To do
 
-1. ✔ <b>:one:</b> Create a class called `Player` in the file `Player.php`
-2. ✔ :one: Add 2 private properties:
+1. ✔ 1️⃣ Create a class called `Player` in the file `Player.php`
+2. ✔ 1️⃣ Add 2 private properties:
    - ✔1️⃣ `cards` (array)
    - ✔1️⃣ `lost` (bool, default=false)
 3. Add a couple of empty public methods to this class:
@@ -75,7 +75,7 @@ I hope this means something is working as it should so far....
 
 > If anything, I'm improving my markdown skills, which is still a win in my book 😂
 
-<hr>
+---
 
 ## Start of day 2
 
@@ -95,21 +95,25 @@ All classes are ready, now you just need to write some minimal glue in the `inde
 
 1. ✔2️⃣ When you click the 'hit' button call `hit` on player, then check the lost status of the player. You will need to pass a Deck variable to this function, you can use the `Blackjack::getDeck()` method for this.
 2. ✔2️⃣ When you click the stand (stay) button call `hit` on dealer, then check the lost status of the dealer. If he is not lost, compare scores to set the winner (if equal the dealer wins).
-3. ✔2️⃣ <b>Surrender</b>: the dealer wins automatically
+3. ✔2️⃣ **Surrender**: the dealer wins automatically
 4. ✔2️⃣ Always display on the page the score for both players. If you have a winner, display it
 5. 🤔2️⃣End of the game: destroy the current `blackjack` variable so the game restarts.
    - note: right now, the only way to restart the game is by clicking the `New game` button
 
-# Nice to have
+## Nice to have
 
 - ❌Implement a betting system
   - ❌every new player (new session) starts with 100 chips
   - ❌after the player gets his first 2 cards, every round ask how much he wants to bet. Minimum bet is 5 chips.
   - ❌if the player wins the game he gets double the amount of chips
-- 🤔2️⃣Implement the blackjack first first turn rule: if the player draws 21 the first turn, he wins directly. If the dealer draws 21 the first turn, he wins. If both draw 21, it's a tie.
+- 🤔2️⃣✔Implement the blackjack first turn rule: if the player draws 21 the first turn, he wins directly. If the dealer draws 21 the first turn, he wins. If both draw 21, it's a tie.
 
-  - when you both nice to have features, a blackjack means an auto win of 10 chips, a blackjack for the dealer a loss of 5 chips for the player.
+  - ❌when you both nice to have features, a blackjack means an auto win of 10 chips, a blackjack for the dealer a loss of 5 chips for the player.
 
-  ### Captain's log, end of day 2, the week and the exercise
+### Captain's log, end of day 2, the week and the exercise
 
-  > It has been a challenging exercise to say the least, having the card, deck and suit classes already made for us was very helpful. Right now everything works except for the betting system and some conditions from the nice to have part that checks the score for both the player and the dealer at the start of the game. Right now, only if the player has 21 points at the start, he wins. But like always, it is nice to see something that you put together, working. 😊
+> It has been a challenging exercise to say the least, having the card, deck and suit classes already made for us was very helpful. Right now everything works except for the betting system and some conditions from the nice to have part that checks the score for both the player and the dealer at the start of the game. Right now, only if the player has 21 points at the start, he wins. But like always, it is nice to see something that you put together, working. 😊
+
+#### Update Sunday, 31/10
+
+> At the moment the Blackjack first turn rule is implemented and it works, however, I'm repeating the switch statement twice, once in the beginning and then inside the code block for the `New Game` button.

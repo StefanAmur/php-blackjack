@@ -11,6 +11,10 @@ require './Dealer.php';
 
 session_start();
 
+if (isset($_POST['new'])) {
+    session_unset();
+}
+
 if (!isset($_SESSION['game'])) {
     $_SESSION['game'] = new Blackjack();
 }
@@ -91,38 +95,6 @@ if (isset($_POST['surrender'])) {
     $dealerScore = $dealer->getScore();
     $cardStyles = "card";
     $result = "You lost!";
-}
-
-if (isset($_POST['new'])) {
-    session_unset();
-    $_SESSION['game'] = new Blackjack();
-    $deck = $_SESSION['game']->getDeck();
-    $player = $_SESSION['game']->getPlayer();
-    $dealer = $_SESSION['game']->getDealer();
-
-    $result = "";
-    $dealerScore = "";
-    $playerScore = $player->getScore();
-    $cardStyles = "card card-hidden";
-    switch (true) {
-        case ($playerScore == Player::TARGET  && $dealer->getScore() == Player::TARGET):
-            $result = "It's a draw!";
-            $cardStyles = "card";
-            $dealerScore = $dealer->getScore();
-            break;
-        case ($playerScore == Player::TARGET):
-            $dealer->surrender();
-            $result = "You win!";
-            $cardStyles = "card";
-            $dealerScore = $dealer->getScore();
-            break;
-        case ($dealer->getScore() == Player::TARGET):
-            $player->surrender();
-            $result = "You lost!";
-            $cardStyles = "card";
-            $dealerScore = $dealer->getScore();
-            break;
-    }
 }
 
 ?>
